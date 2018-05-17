@@ -1,0 +1,120 @@
+---
+title: "Rmarkdown practice"
+author: "Trang Tran"
+date: "5/17/2018"
+output: html_document
+---
+---
+title: "practice"
+author: "Trang Tran"
+date: "5/17/2018"
+output: html_document
+---
+
+add a sentence fdfdfdghgjgj
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+Use __bold__, *italics*, and ~~strikethough~~, and many others.
+
+Links can be simply pasted in to show the whole URL like https://dataone.org, or
+can be linked to a specific chunk of text, e.g., to the [DataONE](https://dataone.org) project.
+
+fggtht
+
+4.4.5 R Code Chunks
+Code chunks (also called fenced code blocks) are created using three sequential backticks to start the block, then the name of the interpreter to use to execute the code (usually r), and then three backticks to end the block. For example:
+
+```{r chunk-name-no-spaces, eval=TRUE} 
+x <- 2
+print(x^3)
+```
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see http://rmarkdown.rstudio.com.
+
+When you click the Knit button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+summary(cars)
+##      speed           dist       
+##  Min.   : 4.0   Min.   :  2.00  
+##  1st Qu.:12.0   1st Qu.: 26.00  
+##  Median :15.0   Median : 36.00  
+##  Mean   :15.4   Mean   : 42.98  
+##  3rd Qu.:19.0   3rd Qu.: 56.00  
+##  Max.   :25.0   Max.   :120.00
+
+Including Plots
+You can also embed plots, for example:
+```{r library(ggplot2), pressure, echo=FALSE}
+
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+
+Inline R expressions and equations
+Just type what you want, like an equation like $\sqrt{2}$ that would be 
+calculated with R as `r sqrt(2)`.
+Just type what you want, like an equation like  
+√
+2
+  that would be calculated with R as 1.4142136.
+
+
+You can also use the full featues of ggplot:
+
+library(ggplot2)
+ggplot(data.frame(x=rnorm(100), y=rnorm(100)), aes(x, y)) + geom_point()
+
+4.4.8 Tables
+You can render a simple table inline:
+However, more likely, you’ll want to format some data from a data frame as a table that is pageable, searchable, and sortable. One really nice way is to use DT::datatable(), like so:
+
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
