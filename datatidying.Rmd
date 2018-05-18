@@ -36,12 +36,16 @@ Choose only columns of interest
 
 catch_df<-catch_df %>% 
   select(Region, Year, Chinook, Sockeye, Coho, Pink, Chum) %>% 
-   gather(Species,catch,-Region,-Year) %>% 
-   rename(catch_thousands = catch) %>% 
-
-  head()
-
+   gather(Species,catch,-Region,-Year)
 ```
+
+```{r}
+catch_df <- catch_df %>% 
+  rename(catch_thousands = catch)
+
+head(catch_df)
+```
+
 
 
 Correct typo and change unit of catch column
@@ -65,29 +69,61 @@ catch_df <- catch_df %>%
 ```
 
 
-```{r}
-catch_df <- catch_df %>%
-  mutate(catch = catch_thousands * 1000)
 
-summary(catch_df)
+#Analysis
+```{r}
+annual_catch<-catch_df %>% 
+  group_by(Year) %>% 
+  summarise(mean(catch_thousands))
+head(annual_catch)
+```
+
+```{r}
+catch_df %>% 
+group_by(Year,Region) %>% 
+  summarise(mean(catch_thousands))
+
+```
+
+```{r}
+catch_df %>% 
+  group_by(Region) %>%
+  summarize(n = n())
+```
+
+```{r}
+catch_df %>% 
+  filter(Region == "SSE") %>% 
+  head() # head() Show just the first n (default:  6) rows
+```
+
+```{r}
+catch_df %>% 
+  group_by(Region) %>% 
+  summarise(mean_catch = mean(catch_thousands)) %>% 
+  arrange(mean_catch)
+```
+
+
+#Joining tables
+```{r}
+region_defs <- read.csv(url("https://knb.ecoinformatics.org/knb/d1/mn/v2/object/df35b.303.1", method = "libcurl"),
+                        stringsAsFactors = FALSE)
 
 ```
 
 
+```{r}
+region_defs <-region_defs%>% 
+select(code,mgmtArea) %>% 
+  rename(Region=code, Region_Name=mgmtArea)
+head(region_defs)
+```
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+```{r}
+catch_joined<-left_join(catch_df,region_defs,by="Region")
+head(catch_joined)
+```
 
 
 
