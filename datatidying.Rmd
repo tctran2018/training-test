@@ -126,7 +126,94 @@ head(catch_joined)
 ```
 
 
+#Data cleaning and intergration
+load escapement goal data
+```{r}
+escgoal <- read.csv(url("https://knb.ecoinformatics.org/knb/d1/mn/v2/object/knb.92014.1", method = "libcurl"),
+                    stringsAsFactors = FALSE)
+head(escgoal)
 
+```
+
+create a subset of escapement goal for sockeye in Bristol Bay
+```{r}
+escgoalSocBristol<-escgoal %>% 
+  select(System,Species,Region,Lower,Upper,Initial.Year) %>% 
+  filter(Region == "Bristol Bay") %>%
+  filter(Species=="Sockeye")
+  head(escgoalSocBristol)
+```
+
+```{r}
+summary(escgoalSocBristol)
+
+```
+
+
+
+```{r}
+escgoalSocBristol <- escgoalSocBristol %>%
+  mutate(Lower = ifelse(Lower == "eliminated", NA, Lower),
+         Lower=as.numeric(Lower))
+```
+
+
+calculate escapement goal for sockeye in Bristol Bay by year
+
+```{r}
+escgoaltab<-escgoalSocBristol %>% 
+  group_by(System, Initial.Year) %>% 
+  summarise(Lower=sum(Lower,na.rm = TRUE), Upper=sum(Upper,na.rm=TRUE)) %>% 
+  arrange(Initial.Year)
+
+```
+
+load escapement data
+```{r}
+esc <- read.csv(url("https://knb.ecoinformatics.org/knb/d1/mn/v2/object/knb.92020.1", method = "libcurl"),
+                    stringsAsFactors = FALSE)
+head(esc)
+
+```
+
+create a subset of escapement data for sockeye in Bristol Bay
+```{r}
+escSocBristol<-esc %>% 
+select(Location,SASAP.Region,Species,DailyCount,sampleDate) %>% 
+  filter(SASAP.Region == "Bristol Bay") %>%
+  filter(Species=="Sockeye")
+  head(escSocBristol)
+```
+
+use separate to create a new column to show year
+
+```{r}
+
+year_df<-escSocBristol %>% 
+  separate(sampleDate, c("year", "month", "date"))
+
+```
+
+calculate escapement of sockey in bristol bay by year
+
+
+```{r}
+esctab<-year_df %>% 
+  group_by(Location,year) %>% 
+  summarise(count=sum(DailyCount))
+
+```
+
+
+Inner join esctab vs escgoal tab
+
+```{r}
+bb_escapement_with_goals <- 
+  left_join(esctab, escgoaltab, by = c("Location" = "System")) %>% 
+  mutate(is_in_range = count >= Lower & count <= Upper,
+         drop_by_year = year >= Initial.Year)
+datatable(bb_escapement_with_goals)
+```
 
 
 
